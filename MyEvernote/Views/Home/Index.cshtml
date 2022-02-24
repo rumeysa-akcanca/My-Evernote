@@ -1,0 +1,154 @@
+﻿@using MyEvernote.Entities
+@model List<Note>
+@{
+    ViewBag.Title = "Index";
+    //Layout = "~/Views/Shared/_Layout.cshtml";+
+
+}
+
+ @*Page content*@
+<div class="container">
+    <div class="row">
+        @*Blog entries*@
+        <div class="col-lg-8">
+            @*Featured blog post*@
+            <div class="card mb-4">
+                @*Carousel*@
+
+                @*<a href="#!"><img class="card-img-top" src="https://dummyimage.com/850x350/dee2e6/6c757d.jpg" alt="..." /></a>*@
+                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button>
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                            <img src="https://picsum.photos/id/1082/850/350" class="d-block w-100" alt="resim1">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://picsum.photos/id/217/850/350" class="d-block w-100" alt="resim2">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://picsum.photos/id/171/850/350" class="d-block w-100" alt="resim3">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://picsum.photos/id/431/850/350" class="d-block w-100" alt="resim4">
+                        </div>
+                        <div class="carousel-item">
+                            <img src="https://picsum.photos/id/505/850/350" class="d-block w-100" alt="resim5">
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+
+                @*Carousel*@
+                <div class="card-body">
+                    <div class="small text-muted">January 1, 2021</div>
+                    <h2 class="card-title">Featured Post Title</h2>
+                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis aliquid atque, nulla? Quos cum ex quis soluta, a laboriosam. Dicta expedita corporis animi vero voluptate voluptatibus possimus, veniam magni quis!</p>
+                    <a class="btn btn-primary" href="#!">Read more →</a>
+                </div>
+            </div>
+            @*Nested row for non-featured blog posts*@
+            <div class="row">
+                
+                @foreach (Note item in Model)
+                {
+                    <div class="col-lg-6">
+
+                        <div class="card mb-4">
+                            <a href="#!"><img class="card-img-top" src="https://dummyimage.com/700x350/dee2e6/6c757d.jpg" alt="@item.Title" /></a>
+                            <div class="card-body">
+                                <div class="small text-muted"><i class="fa fa-clock-o"></i>  @item.ModifiedOn.ToString("dddd, dd MMMM yyyy")</div>
+                                <div class="small text-muted"><i class='fas fa-user-circle'></i>  @item.Owner.Username</div>
+                                <h2 class="card-title h4">@item.Title</h2>
+                                <p class="card-text">
+                                   
+                                    </p>
+                                    <div class="row">
+                                        <div class="col-md-6" s><button class="btn btn-sm btn-outline-warning" type="button"><i class='fas fa-star'></i> @item.LikeCount</button></div>
+                                        <div class="col-md-6 text-lg-end">
+                                            <button class="btn btn-sm btn-outline-success"><i class='fas fa-comment-alt'></i> Comments</button>
+                                        </div><br /> <br />
+
+
+                                        @if (string.IsNullOrEmpty(item.Text) == false && item.Text.Length > 95)
+                                         {
+
+                                               <p>
+                                                 @( item.Text.Substring(0,95)+"...")
+                                                  <div class="col-md-6"><a class="btn  btn-primary" href="#!">Read more →</a></div>
+                                              </p>
+                                         }
+                                              else
+                                             {
+                                                <p>@item.Text</p>
+                                                 <div class="col-md-6"><a class="btn  btn-primary" href="#!">Read more →</a></div>
+
+                                              }
+                                         
+                                        
+
+                                    </div>
+                                </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            
+            @*Pagination*@
+
+            <nav aria-label="Pagination">
+                <hr class="my-0" />
+                <ul class="pagination justify-content-center my-4">
+                    <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Newer</a></li>
+                    <li class="page-item active" aria-current="page"><a class="page-link" href="#!">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#!">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#!">3</a></li>
+                    <li class="page-item disabled"><a class="page-link" href="#!">...</a></li>
+                    <li class="page-item"><a class="page-link" href="#!">15</a></li>
+                    <li class="page-item"><a class="page-link" href="#!">Older</a></li>
+                </ul>
+            </nav>
+            </div> @*col 8 bitişi*@
+            <!--Side--> @*widgets*@
+            <div class="col-lg-4">
+                @*Search widget*@
+                <div class="card mb-4">
+                    <div class="card-header">Search</div>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <input class="form-control" type="text" placeholder="Enter search term..." aria-label="Enter search term..." aria-describedby="button-search" />
+                            <button class="btn btn-primary" id="button-search" type="button">Go!</button>
+                        </div>
+                    </div>
+                </div> <br />
+                @*Categories widget*@
+                @Html.Partial("_PartialCategories")
+               
+                <br /> <br />
+
+                @*Side widget*@
+                <div class="card mb-4">
+                    <div class="card-header">Side Widget</div>
+                    <div class="card-body">You can put anything you want inside of these side widgets. They are easy to use, and feature the Bootstrap 5 card component!</div>
+                </div>
+            </div> 
+            <!--</div>--> @*row burayı kapsamalı*@
+        </div>
+        </div>
+    
+    
+ 
+
+

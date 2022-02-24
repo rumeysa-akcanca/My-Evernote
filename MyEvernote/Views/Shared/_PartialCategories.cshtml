@@ -1,0 +1,22 @@
+﻿@using MyEvernote.BusinessLayer
+@using MyEvernote.Entities
+@*kategori listesini isteyip db' den buraya imşa edecek*@
+
+@{ 
+    CategoryManager cm = new CategoryManager();
+    List<Category> list = cm.GetCategories();
+}
+<div class="list-group">
+    <a href="@Url.Action("Index","Home")" class="list-group-item list-group-item-action list-group-item-success" aria-current="true">
+        <b>Categories | All of them</b> 
+        @*@Url.Action("Index","Home",new { id=category.Id})*@
+    </a>
+  
+
+    @foreach (Category item in list)
+    {
+
+         <a href="/Home/ByCategory/@item.Id" title="@item.Description" class="list-group-item list-group-item-action" ><i class='fas fa-chevron-circle-right'>  @item.Title </i></a>
+    }
+  
+</div>

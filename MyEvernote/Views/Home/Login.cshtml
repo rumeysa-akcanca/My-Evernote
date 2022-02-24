@@ -1,0 +1,67 @@
+﻿@using MyEvernote.ViewModals
+@model LoginViewModel
+@{
+    ViewBag.Title = " MyEvernote - Login Page";
+}
+
+<link href="~/Content/login-resister.css" rel="stylesheet" />
+
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+
+<html>
+<head>
+
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!------ Include the above in your HEAD tag ---------->
+</head>
+@using (Html.BeginForm())
+{ 
+<body id="LoginForm">
+    <div class="container">
+        <h1 class="form-heading"></h1>
+        <div class="login-form">
+            <div class="main-div">
+                <div class="panel">
+                    <h2>Login Page</h2>
+                    <p>Please enter your email and password</p>
+                </div>
+                <form id="Login">
+
+                    <div class="form-group">
+                        @Html.TextBoxFor(model => model.Username, new { @class = "form-control", placeholder = "Enter your user name" })
+                        @*<input type="email" class="form-control" id="inputEmail" placeholder="Email Address">*@
+
+                    </div>
+
+                    <div class="form-group">
+                        @Html.TextBoxFor(model => model.Password, new { @class = "form-control", placeholder = "Enter your password",type = "password" })
+                        @*<input type="password" class="form-control" id="inputPassword" placeholder="Password">*@
+
+                    </div>
+                    <div class="forgot">
+                        <a href="reset.html">Forgot password?</a>
+                    </div>
+                    <button type="submit" class="btn btn-danger ">Login</button>
+                    @*Submit butonuna basıldığında yukarda yazılan bilgiler modele yüklenerek post işlemi gerçekleşecek*@
+                </form>
+            </div>
+            @*<p class="botto-text"> Designed by Sunil Rajput</p>*@
+        </div>
+    </div>
+
+
+</body>
+}
+</html>
+    <script>
+
+        $(function () {
+            $("footer").hide();
+        });
+    </script>
