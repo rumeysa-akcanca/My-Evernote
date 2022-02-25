@@ -1,0 +1,55 @@
+﻿
+@{
+    ViewBag.Title = "Registration Successful";
+}
+
+@*<h2>RegisterOk</h2>*@
+
+
+
+<link href="~/Content/login-resister.css" rel="stylesheet" />
+
+
+<body id="LoginForm">
+    <div class="container">
+        <h1 class="form-heading"></h1>
+        <div class="login-form">
+            <div class="main-div">
+                <div class="panel">
+                    <h2 class="text-center">you are being redirected...</h2>
+                    @*<p>Please enter your email and password</p>*@
+                </div>
+                <form id="Login">
+                    <div class="text-success">
+                        <h2><i class="fa fa-check"></i>&nbsp;&nbsp;&nbsp;You are registered... </h2>
+                    </div>
+                    <p class="justify-content-center">
+                        Please activate your account by clicking the link we sent to your e-mail address.
+                        You cannot add notes or likes without activating your account.
+                    </p>
+
+                    @*<div class="form-group">
+                        <div class="text-success">
+                            <h2><i class="fa fa-check"></i>&nbsp;&nbsp;&nbsp;You are registered... </h2>
+                        </div>
+                        <p class="justify-content-center">
+                            Please activate your account by clicking the link we sent to your e-mail address.
+                            You cannot add notes or likes without activating your account.
+                        </p>*@
+                        @*işe yaramadı*@
+
+                    @*</div>*@
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+</body>}
+
+<script>$(function () {
+    $("footer").hide();
+    setTimeout(function () {
+        window.location = "/Home/Index";@*verdiğimiz süre sonunda çalıştıracak*@
+    },3000);
+        });</script>
