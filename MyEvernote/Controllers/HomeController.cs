@@ -15,6 +15,7 @@ namespace MyEvernote.Controllers
 
         public ActionResult Index()
         {
+            //Rümeysa
             // BusinessLayer.Test test = new BusinessLayer.Test();
             //Database contexti newle ,database yoksa oluştur
             //createifnotexist methodu örnek datanın oluşumunu tetiklemez,initializerın çalışmasını sağlamaz
