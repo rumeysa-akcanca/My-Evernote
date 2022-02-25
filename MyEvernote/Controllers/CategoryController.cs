@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using System.Net;
 using MyEvernote.BusinessLayer;
 using MyEvernote.Entities;
+using Microsoft.AspNetCore.Mvc;
+using Controller = Microsoft.AspNetCore.Mvc.Controller;
 
 namespace MyEvernote.Controllers
 {

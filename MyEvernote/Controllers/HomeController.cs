@@ -15,7 +15,7 @@ namespace MyEvernote.Controllers
 
         public ActionResult Index()
         {
-             BusinessLayer.Test test = new BusinessLayer.Test();
+            // BusinessLayer.Test test = new BusinessLayer.Test();
             //Database contexti newle ,database yoksa oluştur
             //createifnotexist methodu örnek datanın oluşumunu tetiklemez,initializerın çalışmasını sağlamaz
             //test.InsertTest();
@@ -105,20 +105,29 @@ namespace MyEvernote.Controllers
             if(ModelState.IsValid)
             {
                 //hata yakalama
-                EvernoteUser evernoteUser = new EvernoteUser();
-                EvernoteUser user = null;
-                try
+              EvernoteUserManager eum = new BusinessLayer.EvernoteUserManager();
+                BusinessLayerResult<EvernoteUser> res = eum.RegisterUser(model);
+                if (res.Errors.Count > 0)
                 {
-
-                    // user  = evernoteUser.RegisterUser(model);
-
+                    res.Errors.ForEach(x => ModelState.AddModelError("", x));
+                    return View(model);
                 }
-                catch (Exception ex)
-                {
-                    //Gelen mesajı olduğu gibi model error'a veriyoz
-                    ModelState.AddModelError("", ex.Message);
+
+
+
+                //EvernoteUser user = null;
+                //try
+                //{
+
+                //     user  = evernoteUser.RegisterUser(model);
+
+                //}
+                //catch (Exception ex)
+                //{
+                //    //Gelen mesajı olduğu gibi model error'a veriyoz
+                //    ModelState.AddModelError("", ex.Message);
                    
-                }
+                //}
 
 
 
@@ -140,10 +149,10 @@ namespace MyEvernote.Controllers
                 //        }
                 //    }
 
-                if (user == null)
-                {
-                    return View(model);
-                }
+                //if (user == null)
+                //{
+                //    return View(model);
+                //}
               return RedirectToAction("RegisterOk");// kayıt başarıllı sayfası
             }
             return View(model); //model geçerli değilse sayfaya modeli geri yolla

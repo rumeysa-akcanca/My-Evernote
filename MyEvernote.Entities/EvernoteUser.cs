@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MyEvernote.Entities.ValueObject;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -34,5 +35,7 @@ namespace MyEvernote.Entities
         public virtual List<Comment> Comments { get; set; }
         //bir kullanıcının birden çok yorumu var
         public virtual List<Liked> Likes { get; set; }//bir kullanıcının da birden çok like'ı vardır
+
+       
     }
 }
