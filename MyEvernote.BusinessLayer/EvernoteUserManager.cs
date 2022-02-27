@@ -1,5 +1,6 @@
 ﻿using MyEvernote.DataAccessLayer.EntityFramework;
 using MyEvernote.Entities;
+using MyEvernote.Entities.Messages;
 using MyEvernote.Entities.ValueObject;
 using System;
 using System.Collections.Generic;
@@ -28,11 +29,13 @@ namespace MyEvernote.BusinessLayer
                 //bu hatayı homecontrollerda yakalamalıyız
                 if (user.Username == data.Username)
                 {
-                    layerResult.Errors.Add("Username registered.");
+                    //layerResult.Errors.Add("Username registered.");
+                    layerResult.AddError(ErrorMessageCode.UsernameAlreadyExists, "Username registered.");
                 }
                 if (user.Email == data.Email)
                 {
-                    layerResult.Errors.Add("E-mail address registered.");
+                    //layerResult.Errors.Add("E-mail address registered.");
+                    layerResult.AddError(ErrorMessageCode.EmailAlreadyExists, "E-mail address registered.");
                 }
             }
             else
@@ -41,7 +44,13 @@ namespace MyEvernote.BusinessLayer
                 {
                   Username = data.Username,
                   Email = data.Email,
-                  Password = data.Password
+                  Password = data.Password,
+                  ActivateGuid = Guid.NewGuid(),
+                  CretedOn = DateTime.Now,
+                  ModifiedOn = DateTime.Now,
+                  ModifiedUsername ="system",
+                  IsActive = false,
+                  IsAdmin =false,
                 });
                 if(dbResult > 0)
                 {
@@ -52,5 +61,32 @@ namespace MyEvernote.BusinessLayer
             }
             return layerResult; 
         }
+        public BusinessLayerResult<EvernoteUser> LoginUser(LoginViewModel data)
+        {
+            //giriş kontrolü
+            //hesap aktive edilmiş mi
+            //Kullanıcı adı ve şifre eşleşiyo mu? //eşleşiyosa kullanıcı nesnesi dönecek ve login işlemi başarılı
+            BusinessLayerResult<EvernoteUser> layerResult = new BusinessLayerResult<EvernoteUser>();
+            layerResult.Result = repo_user.Find(x => x.Username == data.Username && x.Password == data.Password);
+           
+            if (layerResult.Result!= null)//kullanıcı eşleşmisse
+            {
+                if (!layerResult.Result.IsActive)//eşleşmiş ama activate edilmemişse yine hata mesajı
+                {
+                    //layerResult.Errors.Add("User didn't active.Please check your mail.");
+                    layerResult.AddError(ErrorMessageCode.UserIsNotActive, "User didn't active.");
+                    layerResult.AddError(ErrorMessageCode.CheckYourEmail, "Please check your mail.");
+                }
+                
+            }
+            else//kullanıcı eşleşmemişse, hata mesajı dönmeli
+            {
+                //layerResult.Errors.Add("Username or password don't match");
+                layerResult.AddError(ErrorMessageCode.UsernameOrPassWrong, "Username or password don't match.");
+            }
+            return layerResult;
+
+        }
     }
+
 }

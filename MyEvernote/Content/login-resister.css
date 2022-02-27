@@ -92,3 +92,15 @@
         font-size: 13px;
         text-decoration: none;
     }
+.validation-summary-errors {
+    border: 2px dotted #a94442;
+    background-color: #d76663;
+    border-radius: 8px;
+}
+
+    .validation-summary-errors ul {
+        list-style-type: none;
+        padding: 10px;
+        color: #fff;
+        text-align: left;
+    }
