@@ -47,16 +47,37 @@ namespace MyEvernote.DataAccessLayer.EntityFramework
         public  int Insert(T obje)
         {
             _objectSet.Add(obje);//tabloyu buluyoruz,sonra içine objeyi veriyoruz
+            if (obje is MyEntityBase)
+            {
+                MyEntityBase transformingobject = obje as MyEntityBase;//gelen nesne myentitiesbaseden miras almıyorsa onu myentitiesbase dönüştür ki  ilgili özellikleri miras alsın
+                DateTime now = DateTime.Now;
+                transformingobject.CretedOn = now; ;
+                transformingobject.ModifiedOn = now;
+                transformingobject.ModifiedUsername = "system";//işlem yapan kullanıcı adı yazılmalı...
+
+            }
             return Save();
         }
         public int Update(T obje)
         {
             //entityframeworkte bir nesneyi elde ederiz find' la ya da sorgulayarak db'den
             //sorguladıktan sonra propertylerde değişiklik yaparız ve savechange cağırırız ve o  update eder
+            if (obje is MyEntityBase)
+            {
+                MyEntityBase transformingobject = obje as MyEntityBase;
+                transformingobject.ModifiedOn = DateTime.Now;
+                transformingobject.ModifiedUsername = "system";
+            }
             return Save();
         }
         public int Delete(T obje)
         {
+            //if (obje is MyEntityBase)
+            //{
+            //    MyEntityBase transformingobject = obje as MyEntityBase;
+            //    transformingobject.ModifiedOn = DateTime.Now;
+            //    transformingobject.ModifiedUsername = "system";
+            //}
             _objectSet.Remove(obje);
             return Save();
         }

@@ -1,5 +1,6 @@
 ﻿using MyEvernote.BusinessLayer;
 using MyEvernote.Entities;
+using MyEvernote.Entities.Messages;
 using MyEvernote.Entities.ValueObject;
 using System;
 using System.Collections.Generic;
@@ -85,14 +86,34 @@ namespace MyEvernote.Controllers
 
         public ActionResult Login()
         {
+           
             return View();
         }
         [HttpPost]
         public ActionResult Login(LoginViewModel model) //model geliyo olacak
         {
-            //Giriş kontrolü ve yönlendirme
-            //Session'a kullanıcı bilgi saklama
-            return View();
+            if (ModelState.IsValid)//Model durumu geçerliyse kullanıcı adı ,şifre doluysa,login etmeyi dene
+            {
+                EvernoteUserManager eum = new EvernoteUserManager();
+                BusinessLayerResult<EvernoteUser> UserResult = eum.LoginUser(model);
+                //Eğer hata varsa modelstate 'e bunu basıp sayfayı geri döndür
+                if (UserResult.Errors.Count > 0)//login başarısızsa error gelicek
+                {
+                    if (UserResult.Errors.Find( x=> x.Code == ErrorMessageCode.UserIsNotActive) != null)
+                    {
+                        ViewBag.SetLink = "http://Home/Activate/1234-4567-78980";
+                    }
+
+                  UserResult.Errors.ForEach(x => ModelState.AddModelError("", x.Message));
+                  return View(model);//yine aynı sayfayı aç
+                }
+                Session["login"] = UserResult.Result;//Session'a kullanıcı bilgi saklama
+                return RedirectToAction("Index"); //indekse yönlendirme
+                                                 
+            }
+
+
+            return View(model);//aynı modelde aynı sayfayı aç
         }
 
         public ActionResult Register()
@@ -102,22 +123,19 @@ namespace MyEvernote.Controllers
         [HttpPost]
         public ActionResult Register(RegisterViewModel model)
         {
-            //kullanıcı username kontrolü 
-            // kullanıcı e-posta kontrolü
-            //Kayıt işlemi
-            // Aktivasyon e-postası gönderimi
+           
             if(ModelState.IsValid)
             {
                 //hata yakalama
               EvernoteUserManager eum = new BusinessLayer.EvernoteUserManager();
-                BusinessLayerResult<EvernoteUser> res = eum.RegisterUser(model);
-                if (res.Errors.Count > 0)
+                BusinessLayerResult<EvernoteUser> result = eum.RegisterUser(model);
+                if (result.Errors.Count > 0)
                 {
-                    res.Errors.ForEach(x => ModelState.AddModelError("", x));
+                    result.Errors.ForEach(x => ModelState.AddModelError("", x.Message));
                     return View(model);
                 }
 
-
+                //mail atma işlemi?
 
                 //EvernoteUser user = null;
                 //try
@@ -170,12 +188,14 @@ namespace MyEvernote.Controllers
         public ActionResult UserActivate(Guid activate_id)
         {
             // kullanıcı aktivasyonu sağlanacak
+            //Gelen maildeki linki tıklayıp burdaki actiona düşüp bunun üzerinden aktive edildi hesabınız bıdı bıdı
             return View();
         }
 
         public ActionResult Logout()
         {
-            return View();
+            Session.Clear();
+            return RedirectToAction("Index");
         }
 
         public ActionResult Contact()
