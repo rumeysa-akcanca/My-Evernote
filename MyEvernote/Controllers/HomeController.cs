@@ -51,7 +51,7 @@ namespace MyEvernote.Controllers
         {
             if (id == null)
             {
-                //id'si bilinmeden ulaşamaya çalışırsa kötü bir istek gelmiiş demektir.
+                //id'si bilinmeden ulaşamaya çalışırsa kötü bir istek gelmiiş demektir....
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
