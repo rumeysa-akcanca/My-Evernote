@@ -187,11 +187,31 @@ namespace MyEvernote.Controllers
          //Aktivasyon actionı
         public ActionResult UserActivate(Guid activate_id)
         {
+            //maili aldık tıkladık buraya düşeceğiz
             // kullanıcı aktivasyonu sağlanacak
             //Gelen maildeki linki tıklayıp burdaki actiona düşüp bunun üzerinden aktive edildi hesabınız bıdı bıdı
+            EvernoteUserManager eum = new EvernoteUserManager();
+            BusinessLayerResult<EvernoteUser> res = eum.ActivateUser(activate_id);
+            if (res.Errors.Count > 0)
+            {
+                TempData["errors"] = res.Errors;
+                return RedirectToAction(" UserActivatedCancel");
+            }
             return View();
         }
-
+        public ActionResult UserActivatedOk()
+        {
+            return View();
+        }
+        public ActionResult UserActivatedCancel()
+        {
+            List<ErrorMessageObject> errors = null;
+            if (TempData["errors"] != null)
+            {
+                errors = TempData["errors"] as List<ErrorMessageObject>;
+            }
+            return View();
+        }
         public ActionResult Logout()
         {
             Session.Clear();

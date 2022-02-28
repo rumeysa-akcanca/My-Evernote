@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MyEvernote.Common;
+using MyEvernote.Init;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -16,6 +18,8 @@ namespace MyEvernote
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            App.Common = new WebCommon();
         }
     }
 }

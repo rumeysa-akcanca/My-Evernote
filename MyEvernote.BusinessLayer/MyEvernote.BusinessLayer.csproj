@@ -63,6 +63,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MyEvernote.Common\MyEvernote.Common.csproj">
+      <Project>{03ff4c0f-089b-41a4-9599-bd060738f294}</Project>
+      <Name>MyEvernote.Common</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MyEvernote.DataAccessLayer\MyEvernote.DataAccessLayer.csproj">
       <Project>{e1742678-b2fd-4b47-be4d-f14d05c2ca0c}</Project>
       <Name>MyEvernote.DataAccessLayer</Name>
@@ -71,6 +75,9 @@
       <Project>{444ba314-5c4f-44b6-9a3f-41d1170bf23e}</Project>
       <Name>MyEvernote.Entities</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

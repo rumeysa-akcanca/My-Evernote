@@ -1,4 +1,5 @@
-﻿using MyEvernote.DataAccessLayer.EntityFramework;
+﻿using MyEvernote.Common.Helper;
+using MyEvernote.DataAccessLayer.EntityFramework;
 using MyEvernote.Entities;
 using MyEvernote.Entities.Messages;
 using MyEvernote.Entities.ValueObject;
@@ -55,8 +56,14 @@ namespace MyEvernote.BusinessLayer
                 if(dbResult > 0)
                 {
                     layerResult.Result= repo_user.Find(x => x.Email == data.Email && x.Username == data.Username);
+
                     //TODO : aktivasyon maili atılacak...
                     //layerResult.Result.ActivatedGuid
+                    string siteUri = ConfigHelper.Get<string>("SiteRootUri");
+                    string activateUri = $"{siteUri}/Home/UserActivate/{user.ActivateGuid}";//kullanıcıya gidecek
+                    string body = $"Hi {user.Name} {user.Surname}; <br><br>" +
+                        $"<a href = '{activateUri}' target='_blank'>Click</a> to activate your account";//mesaj gövdesi body
+                    MailHelper.SendMail(body,user.Email, "MyEvernote account activation ");
                 }
             }
             return layerResult; 
@@ -86,6 +93,28 @@ namespace MyEvernote.BusinessLayer
             }
             return layerResult;
 
+        }
+        //Hesap aktivasyon devamı aktifleştirme
+        public BusinessLayerResult<EvernoteUser> ActivateUser(Guid activatedId)
+        {
+            //bu activated ıd'ye sahip bir user var mı?
+            BusinessLayerResult<EvernoteUser> layerResult = new BusinessLayerResult<EvernoteUser>();
+            layerResult.Result = repo_user.Find( x=> x.ActivateGuid == activatedId);
+            if (layerResult.Result !=null)
+            {
+                if (layerResult.Result.IsActive)
+                {
+                    layerResult.AddError(ErrorMessageCode.UserAlreadyActive, "User already activated");
+                    return layerResult;
+                }
+                layerResult.Result.IsActive = true;
+                repo_user.Update(layerResult.Result);
+            }
+            else
+            {
+                layerResult.AddError(ErrorMessageCode.ActivatedIdDoesNotExists, "No user found to activate");
+            }
+            return layerResult;
         }
     }
 

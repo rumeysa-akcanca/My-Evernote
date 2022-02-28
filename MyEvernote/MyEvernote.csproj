@@ -305,6 +305,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Init\WebCommon.cs" />
     <Compile Include="obj\Debug\.NETFramework,Version=v4.7.2.AssemblyAttributes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -407,6 +408,8 @@
     <Content Include="Views\Home\Login.cshtml" />
     <Content Include="Views\Home\Register.cshtml" />
     <Content Include="Views\Home\RegisterOk.cshtml" />
+    <Content Include="Views\Home\UserActivatedOk.cshtml" />
+    <Content Include="Views\Home\UserActivatedCancel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -424,6 +427,10 @@
     <ProjectReference Include="..\MyEvernote.BusinessLayer\MyEvernote.BusinessLayer.csproj">
       <Project>{4f0730ae-ff72-4d8f-8e31-ab073381ffe6}</Project>
       <Name>MyEvernote.BusinessLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MyEvernote.Common\MyEvernote.Common.csproj">
+      <Project>{03ff4c0f-089b-41a4-9599-bd060738f294}</Project>
+      <Name>MyEvernote.Common</Name>
     </ProjectReference>
     <ProjectReference Include="..\MyEvernote.DataAccessLayer\MyEvernote.DataAccessLayer.csproj">
       <Project>{e1742678-b2fd-4b47-be4d-f14d05c2ca0c}</Project>
