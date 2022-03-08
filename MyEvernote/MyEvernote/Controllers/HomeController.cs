@@ -15,11 +15,9 @@ namespace MyEvernote.Controllers
 
         public ActionResult Index()
         {
-<<<<<<< HEAD
-            //Rümeysaakcanca
-=======
+
+            //Rümeysaakcan
             //Rümeysa
->>>>>>> ef81fa49964e8259292832ed7f5c01f9d5d1278b
             // BusinessLayer.Test test = new BusinessLayer.Test();
             //Database contexti newle ,database yoksa oluştur
             //createifnotexist methodu örnek datanın oluşumunu tetiklemez,initializerın çalışmasını sağlamaz

@@ -45,7 +45,7 @@ namespace MyEvernote.BusinessLayer
                 });
                 if(dbResult > 0)
                 {
-                    layerResult.Result= repo_user.Find(x => x.Email == data.Email && x.Username == data.Username);
+                    layerResult.Result= repo_user.Find(x => x.Email == data.Email && x.Username == data.Username);//igili user nesnesi çekiliyo
                     //TODO : aktivasyon maili atılacak...
                     //layerResult.Result.ActivatedGuid
                 }
