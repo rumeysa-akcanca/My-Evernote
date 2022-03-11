@@ -1,6 +1,7 @@
-﻿
+﻿@using MyEvernote.Entities.Messages
+@model List<ErrorMessageObject>
 @{
-    ViewBag.Title = "Account invalid";
+    ViewBag.Title = "invalid Operation";
 }
 
 @*<h2>RegisterOk</h2>*@
@@ -20,11 +21,16 @@
                     @*<p>Please enter your email and password</p>*@
                 </div>
                 <form id="Login">
-                    <div class="text-success">
-                        <h2><i class="fa fa-check"></i>&nbsp;&nbsp;&nbsp;account invalid... </h2>
+                    <div class="text-danger">
+                        <h2><i class="fa fa-remove" style="color:red"></i>&nbsp;&nbsp;&nbsp;account invalid... </h2>
                     </div>
                     <p class="justify-content-center">
-                        The your account has been activated. You can now share notes and like.
+                       @*hata mesajlarının verileceği yer*@
+
+                        @foreach (ErrorMessageObject error in Model)
+                        {
+                            @error.Message<br>//satır satır hataları ekrana yazma
+                        }
                     </p>
                 </form>
             </div>

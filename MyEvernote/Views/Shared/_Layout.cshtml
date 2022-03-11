@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿@using MyEvernote.Entities
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -8,49 +10,86 @@
     <title>Blog Home - Start Bootstrap Template</title>
     <!-- Favicon-->
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Core theme CSS (includes Bootstrap)-->
     <!--<link href="css/styles.css" rel="stylesheet" />-->
+    @*<script src="//ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="//cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"></script>*@
+
+
+
+    @*<link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>*@
+
+    @*deneme*@
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
     <link href="~/Content/styles.css" rel="stylesheet" /> @*projenin routena git onun altındaki contentin altında ara*@
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src='https://kit.fontawesome.com/a076d05399.js' crossorigin='anonymous'></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Bootstrap core JS
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
+    <script src="~/scripts/jquery-3.6.0.min.js"></script>
     <script src="~/js/scripts.js"></script>
-    <script src="~/Scripts/bootstrap.min.js"></script>
-    <script src="~/Scripts/jquery-3.6.0.min.js"></script>
+    <script src="~/scripts/bootstrap.min.js"></script>
 </head>
 <body>
+
+    @{ 
+        EvernoteUser user = null;
+        if (Session["login"] != null)
+        {
+            user = Session["login"] as EvernoteUser;
+        }
+    }
+
+
     <!-- Responsive navbar-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="~/Home/Index">My Blog</a>
+            <a class="navbar-brand" href="/Home/Index">My Blog</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Menu"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav ms-left mb-2 mb-lg-0">
+                    @if (user !=null)
+                    {
                     <li class="nav-item"><a class="nav-link" href="#"><i class="fa fa-wrench" style="color:skyblue"></i>    Admin</a></li>
-                    <li class="nav-item"><a class="nav-link" href="~/Home/MostLiked"><i class="fa fa-star" style="color:skyblue"></i>     Top Rated</a></li> @*en beğenilenler*@
+                    }
+                    <li class="nav-item"><a class="nav-link" href="/Home/MostLiked"><i class="fa fa-star" style="color:skyblue"></i>     Top Rated</a></li> @*en beğenilenler*@
                     <li class="nav-item"><a class="nav-link" href="#"><i class='fa fa-th-list' style="color:skyblue"></i>     Last Post</a></li>
-                    <li class="nav-item"><a class="nav-link" href="~/Home/About"><i class="fa fa-info-circle" style="color:skyblue"></i>     About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/Home/About"><i class="fa fa-info-circle" style="color:skyblue"></i>     About</a></li>
                     @*<li class="nav-item"><a class="nav-link active" aria-current="page" href="#">Blog</a></li>*@
                 </ul>
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 ">
-                    <li class="nav-item">
-                        <a class="nav-link" href="~/Home/Login"><i class='fas fa-sign-in-alt ' style="color:skyblue"></i>   Login</a>
-                    </li>
+                    @if (user == null)
+                    {
+                       <li class="nav-item">
+                        <a class="nav-link" href="/Home/Login"><i class='fas fa-sign-in-alt ' style="color:skyblue"></i>   Login</a>
+                       </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="~/Home/Register"><i class='fas fa-user-alt' style="color:skyblue"></i>   Sign Up</a>
-                    </li>
+                        <li class="nav-item">
+                        <a class="nav-link" href="/Home/Register"><i class='fas fa-user-alt' style="color:skyblue"></i>   Sign Up</a>
+                    
+                    
+                       </li>
+                    }
+                    else
+                    { 
+                       <li class="nav-item">
+                         <a class="nav-link " href="/Home/ShowProfile"><i class='fas fa-user-alt' style="color:skyblue"></i>   @user.Username</a>
+                       </li>
+                        <li class="nav-item">
+                        <a class="nav-link" href="/Home/Logout"><i class='fas fa-sign-out-alt' style="color:skyblue"></i>   Exit</a>
+                        </li>
+                     
+                     }
 
-                    <li class="nav-item">
-                        <a class="nav-link " href="#"><i class='fas fa-user-alt' style="color:skyblue"></i>   rumeysaakcanca</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><i class='fas fa-sign-out-alt' style="color:skyblue"></i>   Exit</a>
-                    </li>
+                           
                 </ul>
             </div>
         </div>

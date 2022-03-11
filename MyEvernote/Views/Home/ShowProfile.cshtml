@@ -1,0 +1,78 @@
+﻿
+@using MyEvernote.Entities
+@model EvernoteUser
+    @{ 
+        ViewBag.Title = "Your Profile";
+    }
+
+
+<div class="container">
+    <div class="row">
+<h2>@ViewBag.title</h2>
+<hr />
+    </div>
+
+
+<div class="row">
+
+   <div class="col-md-2">
+      <img src="~/images/@Model.ProfileImageFilename" class="rounded-circle" width="128" height="128"/>
+   </div>
+
+   <div class="col-md-8">
+       <h3> @(Model.Name + " " + Model.Surname)</h3>
+       <br />
+       <h6> <b>Username : </b>@Model.Username</h6>
+       <h6> <b>Email: </b>@Model.Email</h6>
+       <br />
+       <h6><a href="#">more...</a></h6>
+    </div>
+
+   <div class="col-md-2 text-end">
+       <div class="btn-group">
+            <a class="btn dropdown-toggle btn-info" data-toggle="dropdown"
+               href="#">
+            Options
+            <i class="fa fa-gear"></i><span class=""></span></a>
+           <ul class="dropdown-menu">
+               <li><a  href="@Url.Action("EditProfile")"><i class='fas fa-edit'>&nbsp;</i> Edit</a></li>
+               <li><a  href="@Url.Action("DeleteProfile")" onclick="return confirm(' are you sure remove this account?');"><i class='fas fa-trash-alt'>&nbsp;</i> Delete</a></li>
+           </ul>
+       </div>
+
+   </div>
+   </div>
+  </div>
+
+<script>
+    function  confirm() {
+        alert("are you sure remove this account?");
+    }
+</script>
+
+@*<div class="container">
+
+    <div class="row">
+        <h2>@ViewBag.Title</h2>
+        <hr />
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-2">
+            <img src="~/images/@Model.ProfileImageFilename" class="img-circle" width="128" height="128" />
+        </div>
+        
+        <div class="col-md-10">
+            <h3>@(Model.Name + " " + Model.Surname)</h3>
+            <br />
+            <h5><b>@Html.DisplayNameFor(model => model.Username) : </b>@Model.Username</h5>
+            <h5><b>@Html.DisplayNameFor(model => model.Email) : </b>@Model.Email</h5>
+            <br />
+            <h5><a href="#">More... </a></h5>
+        </div>
+
+    </div>
+</div>*@
+
+

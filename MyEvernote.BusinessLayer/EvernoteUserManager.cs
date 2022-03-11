@@ -45,6 +45,7 @@ namespace MyEvernote.BusinessLayer
                 {
                   Username = data.Username,
                   Email = data.Email,
+                  ProfileImageFilename="gandalffun.png",
                   Password = data.Password,
                   ActivateGuid = Guid.NewGuid(),
                   CretedOn = DateTime.Now,
@@ -59,15 +60,32 @@ namespace MyEvernote.BusinessLayer
 
                     //TODO : aktivasyon maili atılacak...
                     //layerResult.Result.ActivatedGuid
-                    string siteUri = ConfigHelper.Get<string>("SiteRootUri");
-                    string activateUri = $"{siteUri}/Home/UserActivate/{user.ActivateGuid}";//kullanıcıya gidecek
-                    string body = $"Hi {user.Name} {user.Surname}; <br><br>" +
+                    string siteUri = ConfigHelper.Get<string>("SiteRootUri");//sitenin adresini siteUri değişkenine aldım
+                    string activateUri = $"{siteUri}/Home/UserActivate/{layerResult.Result.ActivateGuid}";//kullanıcının geleceği link
+                    string body = $"Hi {layerResult.Result.Username}; <br><br>" +
                         $"<a href = '{activateUri}' target='_blank'>Click</a> to activate your account";//mesaj gövdesi body
-                    MailHelper.SendMail(body,user.Email, "MyEvernote account activation ");
+                    MailHelper.SendMail(body,layerResult.Result.Email, "MyEvernote account activation ");//default true html mesai içeriği var
+
+
+                    //Gmail  üzerinden mail attığımız için gmail hesabının  bazı ayarlaru var c#'dan gmailden kod göndermek IMap gibi bişileri 
+                    //açmak gerekiyo gmail üzerindeki ayarlardan
                 }
             }
             return layerResult; 
         }
+
+        public BusinessLayerResult<EvernoteUser> GetUserById(int id)
+        {
+            BusinessLayerResult<EvernoteUser> res = new BusinessLayerResult<EvernoteUser>();
+            res.Result = repo_user.Find(x => x.Id == id);
+            if (res.Result == null)
+            {
+                res.AddError(ErrorMessageCode.UserNotFound, "User not found");
+                //kullanıcıyı bulamazsak hatayı belirtmiş olacağız
+            }
+            return res;//kullanıcı nesnemiz bize geri dönüyo
+        }
+
         public BusinessLayerResult<EvernoteUser> LoginUser(LoginViewModel data)
         {
             //giriş kontrolü
@@ -99,18 +117,20 @@ namespace MyEvernote.BusinessLayer
         {
             //bu activated ıd'ye sahip bir user var mı?
             BusinessLayerResult<EvernoteUser> layerResult = new BusinessLayerResult<EvernoteUser>();
-            layerResult.Result = repo_user.Find( x=> x.ActivateGuid == activatedId);
-            if (layerResult.Result !=null)
+            layerResult.Result = repo_user.Find( x=> x.ActivateGuid == activatedId);//bu activatedıd'ye sahip bir user var mi?
+            if (layerResult.Result !=null) //kulllaanıcı null değilse
             {
-                if (layerResult.Result.IsActive)
+                if (layerResult.Result.IsActive) //kullanıcı aktif mi?
                 {
+                    //aktifse
                     layerResult.AddError(ErrorMessageCode.UserAlreadyActive, "User already activated");
                     return layerResult;
                 }
+                //aktif değilse aktifleştir
                 layerResult.Result.IsActive = true;
                 repo_user.Update(layerResult.Result);
             }
-            else
+            else //eğer girilen ıd bulunamadıysa
             {
                 layerResult.AddError(ErrorMessageCode.ActivatedIdDoesNotExists, "No user found to activate");
             }

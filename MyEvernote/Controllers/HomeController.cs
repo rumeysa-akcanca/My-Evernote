@@ -2,10 +2,12 @@
 using MyEvernote.Entities;
 using MyEvernote.Entities.Messages;
 using MyEvernote.Entities.ValueObject;
+using MyEvernote.ViewModal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+
 using System.Web;
 using System.Web.Mvc;
 
@@ -74,14 +76,68 @@ namespace MyEvernote.Controllers
             
         }
 
-
-
-
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
 
             return View();
+        }
+      
+        public ActionResult ShowProfile()
+        {
+            EvernoteUser currentUser = Session["login"] as EvernoteUser;
+            EvernoteUserManager eum = new EvernoteUserManager();
+            BusinessLayerResult<EvernoteUser> res = eum.GetUserById(currentUser.Id);
+            //kontrol etmemiz lazım
+            if (res.Errors.Count > 0)
+            {
+                ErrorViewModel errornotifyObj = new ErrorViewModel()
+                {
+                    Title = "Something went wrong ",
+                    Items = res.Errors
+                };
+                return View("Error", errornotifyObj);
+            }
+            return View(res.Result);
+        }
+        public ActionResult EditProfile()
+        {
+            return View();
+        }
+        [HttpPost]
+        public ActionResult EditProfile(EvernoteUser user)
+        {
+            return View();
+        }
+        public ActionResult RemoveProfile()
+        {
+            //get işlemi : gelicez silicez sayfayı indekse yönlendiricez
+            return View();
+        }
+        //public ActionResult TestNotify()
+        //{
+        //    ErrorViewModel model = new ErrorViewModel()
+        //    {
+        //        Header = "Yönlendirme..",
+        //        Title = "Ok Test",
+        //        RedirectingTimeout = 10000,
+        //        Items = new List<ErrorMessageObject>()
+        //        { new ErrorMessageObject() { Message = "Test basarılı 1" }, 
+        //            new ErrorMessageObject(){ Message=" Test başarılı 2" } }
+        //    };
+        //    return View("Error",model);
+        //}
+
+        public ActionResult TestNotify()
+        {
+            InfoViewModel model = new InfoViewModel()
+            {
+                Header = "Yönlendirme..",
+                Title = "Ok Test",
+                RedirectingTimeout = 10000,
+                Items = new List<string>(){ "Test basarılı 1" ,"Test başarılı 2"  }
+            };
+            return View("Info", model);
         }
 
         public ActionResult Login()
@@ -148,7 +204,7 @@ namespace MyEvernote.Controllers
                 //{
                 //    //Gelen mesajı olduğu gibi model error'a veriyoz
                 //    ModelState.AddModelError("", ex.Message);
-                   
+
                 //}
 
 
@@ -175,43 +231,60 @@ namespace MyEvernote.Controllers
                 //{
                 //    return View(model);
                 //}
-              return RedirectToAction("RegisterOk");// kayıt başarıllı sayfası
+                OkViewModel notifyObj = new OkViewModel()
+                {
+                    Title = "Registration Successful",
+                    RedirectingUrl = "/Home/Login",
+                };
+                notifyObj.Items.Add(" Please activate your account by clicking the link we sent to your e-mail address.You cannot add notes or likes without activating your account.");
+              return View("Ok",notifyObj);// kayıt başarıllı sayfası
             }
             return View(model); //model geçerli değilse sayfaya modeli geri yolla
         }
-        public ActionResult RegisterOk()
-        {
-            return View();
-        }
-
+       
          //Aktivasyon actionı
-        public ActionResult UserActivate(Guid activate_id)
+        public ActionResult UserActivate(Guid id)
         {
             //maili aldık tıkladık buraya düşeceğiz
-            // kullanıcı aktivasyonu sağlanacak
+            // kullanıcı aktivasyonu sağlanacak sonra useractivateok sayfasına yönlendirilmeli
             //Gelen maildeki linki tıklayıp burdaki actiona düşüp bunun üzerinden aktive edildi hesabınız bıdı bıdı
             EvernoteUserManager eum = new EvernoteUserManager();
-            BusinessLayerResult<EvernoteUser> res = eum.ActivateUser(activate_id);
-            if (res.Errors.Count > 0)
+            BusinessLayerResult<EvernoteUser> res = eum.ActivateUser(id);
+            if (res.Errors.Count > 0)//hata varsa
             {
-                TempData["errors"] = res.Errors;
-                return RedirectToAction(" UserActivatedCancel");
-            }
-            return View();
-        }
-        public ActionResult UserActivatedOk()
-        {
-            return View();
-        }
-        public ActionResult UserActivatedCancel()
-        {
-            List<ErrorMessageObject> errors = null;
-            if (TempData["errors"] != null)
+                ErrorViewModel errornotifyObj = new ErrorViewModel()
+                {
+                    Title = "invalid Operation ",
+                    Items = res.Errors
+                };
+                return View("Error", errornotifyObj);
+                //TempData["errors"] = res.Errors;
+                //return RedirectToAction(" UserActivatedCancel");
+
+            }//olay basarılı errror count 0 gelmişse
+
+            OkViewModel oknotifyObj = new OkViewModel()
             {
-                errors = TempData["errors"] as List<ErrorMessageObject>;
-            }
-            return View();
+                Title = "Account activated",
+                RedirectingUrl ="/Home/Login",
+            };
+            oknotifyObj.Items.Add(" The your account has been activated. You can now share notes and like.");
+            return View("Ok",oknotifyObj);
         }
+        //public ActionResult UserActivatedOk()
+        //{
+        //    return View();
+
+        //}
+        //public ActionResult UserActivatedCancel()
+        //{
+        //    List<ErrorMessageObject> errors = null;//sayfanın modeli list<ErrorMessageObject>
+        //    if (TempData["errors"] != null) //gelen hata boş değilse
+        //    {
+        //        errors = TempData["errors"] as List<ErrorMessageObject>;//tempdata obje olarak tutuyor tip dönüşümü yapmalıyız
+        //    }
+        //    return View(errors);//hataları sayfaya model olarak gönder
+        //}
         public ActionResult Logout()
         {
             Session.Clear();
@@ -225,4 +298,5 @@ namespace MyEvernote.Controllers
             return View();
         }
     }
+
 }

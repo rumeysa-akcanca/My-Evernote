@@ -12,20 +12,24 @@ namespace MyEvernote.Common.Helper
     
         public class MailHelper
         {
+          //Kodlar sabit
             public static bool SendMail(string body, string to, string subject, bool isHtml = true)
             {
+              //tek bir adres alam metot ama aşağıdaki metodu kulllanarak mail göndermeyi yapıyor
                 return SendMail(body, new List<string> { to }, subject, isHtml);
             }
 
             public static bool SendMail(string body, List<string> to, string subject, bool isHtml = true)
             {
+              //liststring to : mesaj kimlere atılacak listesi
               //ıshtml body mi gönderiyorum yoksa basit bir metin mi
                 bool result = false;
 
                 try
                 {
                     var message = new MailMessage();
-                    message.From = new MailAddress(ConfigHelper.Get<string>("MailUser"));
+                    message.From = new MailAddress(ConfigHelper.Get<string>("MailUser"));//mail adresi tanımlama
+                    //ConfigHelper' a git  get metotuna string olarak okuyacaksın mailUser(Web config'deki anahtar kelime)' oku
 
                     to.ForEach(x =>
                     {
@@ -44,17 +48,17 @@ namespace MyEvernote.Common.Helper
                         smtp.EnableSsl = true;//ssl aktifleştirme
                         smtp.Credentials =
                             new NetworkCredential(
-                                ConfigHelper.Get<string>("MailUser"),//git web.Config AppSettingden getir
+                                ConfigHelper.Get<string>("MailUser"),//git web.Config AppSettingden getir diye set ediuoruz
                                 ConfigHelper.Get<string>("MailPass"));
                        //Credentials = kimlik bilgileri
 
                         smtp.Send(message);//mail mesaj gönderimi
-                        result = true;
+                        result = true;//başarılı olursa geriye true dönecek
                     }
                 }
                 catch (Exception)
                 {
-
+                  // eğer bir hata olursa catch'e düşüp geriye  result false dönecek
                 }
 
                 return result;

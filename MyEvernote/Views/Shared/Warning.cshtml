@@ -1,6 +1,5 @@
-﻿@using MyEvernote.Entities.Messages
-@using MyEvernote.ViewModal
-@model ErrorViewModel
+﻿@using MyEvernote.ViewModal
+@model WarningViewModel
 @{
     ViewBag.Title = Model.Title;
 
@@ -18,15 +17,15 @@
 
                 </div>
                 <form id="Login">
-                    <div class="text-danger">
-                        <h2><i class="fa fa-times-circle" ></i>&nbsp;&nbsp;&nbsp;@Model.Title </h2>
+                    <div class="text-warning">
+                        <h2><i class="fa fa-warning" ></i>&nbsp;&nbsp;&nbsp;@Model.Title </h2>
                     </div>
                     <p class="justify-content-center">
                         @*hata mesajlarının verileceği yer*@
 
-                        @foreach (ErrorMessageObject msg in Model.Items)
+                        @foreach (string msg in Model.Items)
                         {
-                            @msg.Message<br>//satır satır hataları ekrana yazma
+                            @msg<br>//satır satır hataları ekrana yazma
                         }
                     </p>
                 </form>
