@@ -11,7 +11,7 @@ namespace MyEvernote.Init
     {
         public string GetCurrentUsername()
         {
-            //webde getusername alımı
+            //webde getusername alımı.
             if (HttpContext.Current.Session["login"] != null)
             {
                EvernoteUser user = HttpContext.Current.Session["login"] as EvernoteUser;
