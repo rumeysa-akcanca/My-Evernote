@@ -18,7 +18,7 @@ namespace MyEvernote.BusinessLayer
         {
             //kullanıcı username kontrolü 
             // kullanıcı e-posta kontrolü
-            //Kayıt işlemi
+            //Kayıt işlemi yapılacak
             // Aktivasyon e-postası gönderimi
            EvernoteUser user = repo_user.Find(x => x.Username == data.Username || x.Email == data.Email);
             BusinessLayerResult<EvernoteUser> layerResult = new BusinessLayerResult<EvernoteUser>();
